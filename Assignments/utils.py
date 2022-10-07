@@ -1,4 +1,3 @@
-import nltk
 import lxml.etree as et
 
 def load_root(path):
@@ -16,7 +15,8 @@ def get_date(talk):
 
 def get_title(talk):
     title = talk.find('head/title').text
-    return title
+    speaker = get_speaker(talk)
+    return title.strip(speaker + ':')
 
 def get_speaker(talk):
     speaker = talk.find('head/speaker').text
@@ -28,3 +28,9 @@ def get_wc(talk):
 
 def date_to_int(year, month, day):
     return year * 100000 + month * 1000 + day
+
+def extract_language(lang_id):
+    rev = lang_id[::-1]
+    # split only at first point:
+    f_id, lang = rev.split('-', 1)
+    return lang[::-1]
